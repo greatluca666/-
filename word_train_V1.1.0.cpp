@@ -11,7 +11,7 @@
 
 using namespace std;
 
-// ÑÕÉ«¶¨Òå
+// é¢œè‰²å®šä¹‰
 enum COLOR {
     BLACK = 0,
     BLUE = 1,
@@ -31,17 +31,17 @@ enum COLOR {
     WHITE = 15
 };
 
-// ÉèÖÃ¿ØÖÆÌ¨ÎÄ±¾ÑÕÉ«
+// è®¾ç½®æ§åˆ¶å°æ–‡æœ¬é¢œè‰²
 void setColor(int textColor, int bgColor = BLACK) {
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), (bgColor << 4) | textColor);
 }
 
-// ÖØÖÃÎÄ±¾ÑÕÉ«ÎªÄ¬ÈÏ
+// é‡ç½®æ–‡æœ¬é¢œè‰²ä¸ºé»˜è®¤
 void resetColor() {
     setColor(WHITE, BLACK);
 }
 
-// ÇåÆÁ²¢ÉèÖÃ±êÌâ
+// æ¸…å±å¹¶è®¾ç½®æ ‡é¢˜
 void clearScreen(const string& title = "") {
     system("cls");
     if (!title.empty()) {
@@ -53,29 +53,29 @@ void clearScreen(const string& title = "") {
     }
 }
 
-// ĞŞ¸´£ºÓïÒô²¥·Åº¯Êı£¨½â¾ö×Ö·ûÌæ»»´íÎó£©
+// ä¿®å¤ï¼šè¯­éŸ³æ’­æ”¾å‡½æ•°ï¼ˆè§£å†³å­—ç¬¦æ›¿æ¢é”™è¯¯ï¼‰
 void playVoice(const string& text) {
     if (text.empty()) return;
 
-    // ¹¹ÔìPowerShellÃüÁî
+    // æ„é€ PowerShellå‘½ä»¤
     string psCommand = "powershell -NoProfile -WindowStyle Hidden -Command \"Add-Type -AssemblyName System.Speech; $synth = New-Object System.Speech.Synthesis.SpeechSynthesizer; $synth.Rate = -2; $synth.Speak('";
     
-    // ĞŞ¸´£ºÓÃÓ¢ÎÄË«ÒıºÅÌæ»»Ó¢ÎÄµ¥ÒıºÅ£¨±ÜÃâÃüÁî³åÍ»£©
+    // ä¿®å¤ï¼šç”¨è‹±æ–‡åŒå¼•å·æ›¿æ¢è‹±æ–‡å•å¼•å·ï¼ˆé¿å…å‘½ä»¤å†²çªï¼‰
     string safeText = text;
-    replace(safeText.begin(), safeText.end(), '\'', '"');  // µ¥ÒıºÅ¡úË«ÒıºÅ£¨Í¬ÀàĞÍ×Ö·ûÌæ»»£©
+    replace(safeText.begin(), safeText.end(), '\'', '"');  // å•å¼•å·â†’åŒå¼•å·ï¼ˆåŒç±»å‹å­—ç¬¦æ›¿æ¢ï¼‰
     
-    // Æ´½ÓÍêÕûÃüÁî
+    // æ‹¼æ¥å®Œæ•´å‘½ä»¤
     psCommand += safeText + "');\"";
 
-    // Ö´ĞĞÃüÁî£¨Òş²Ø´°¿Ú£©
+    // æ‰§è¡Œå‘½ä»¤ï¼ˆéšè—çª—å£ï¼‰
     STARTUPINFO si;
-    ZeroMemory(&si, sizeof(si));  // ĞŞ¸´£ºÓÃZeroMemory³õÊ¼»¯½á¹¹Ìå£¬±ÜÃâ¾¯¸æ
+    ZeroMemory(&si, sizeof(si));  // ä¿®å¤ï¼šç”¨ZeroMemoryåˆå§‹åŒ–ç»“æ„ä½“ï¼Œé¿å…è­¦å‘Š
     si.cb = sizeof(si);
     si.dwFlags = STARTF_USESHOWWINDOW;
     si.wShowWindow = SW_HIDE;
     
     PROCESS_INFORMATION pi;
-    ZeroMemory(&pi, sizeof(pi));  // ĞŞ¸´£ºÓÃZeroMemory³õÊ¼»¯½á¹¹Ìå
+    ZeroMemory(&pi, sizeof(pi));  // ä¿®å¤ï¼šç”¨ZeroMemoryåˆå§‹åŒ–ç»“æ„ä½“
 
     if (CreateProcessA(
         NULL,
@@ -94,13 +94,13 @@ void playVoice(const string& text) {
         CloseHandle(pi.hThread);
     } else {
         setColor(LIGHTRED);
-        cout << "ÓïÒô²¥·ÅÊ§°Ü£¨¿ÉÄÜPowerShell±»½ûÓÃ£©" << endl;
+        cout << "è¯­éŸ³æ’­æ”¾å¤±è´¥ï¼ˆå¯èƒ½PowerShellè¢«ç¦ç”¨ï¼‰" << endl;
         resetColor();
         Sleep(1000);
     }
 }
 
-// ¼ì²éÓïÒô¹¦ÄÜÊÇ·ñ¿ÉÓÃ
+// æ£€æŸ¥è¯­éŸ³åŠŸèƒ½æ˜¯å¦å¯ç”¨
 bool checkVoiceAvailable() {
     string testCmd = "powershell -NoProfile -WindowStyle Hidden -Command \"Add-Type -AssemblyName System.Speech; exit 0;\"";
     int result = system(testCmd.c_str());
@@ -117,16 +117,16 @@ struct rem_vocabulary{
 rem_vocabulary rv[1000000];
 
 void printword() {
-    clearScreen("µ¥´ÊÁĞ±í");
+    clearScreen("å•è¯åˆ—è¡¨");
     
     setColor(CYAN);
-    cout << left << setw(6) << "ĞòºÅ" 
-         << setw(20) << "Ó¢ÎÄµ¥´Ê" 
-         << setw(0) << "ÖĞÎÄÒâË¼" << endl;
+    cout << left << setw(6) << "åºå·" 
+         << setw(20) << "è‹±æ–‡å•è¯" 
+         << setw(0) << "ä¸­æ–‡æ„æ€" << endl;
     cout << string(60, '-') << endl;
     resetColor();
     
-    // ĞŞ¸´£ºÓÃsize_t±ÜÃâÓĞ·ûºÅ/ÎŞ·ûºÅ±È½Ï¾¯¸æ
+    // ä¿®å¤ï¼šç”¨size_té¿å…æœ‰ç¬¦å·/æ— ç¬¦å·æ¯”è¾ƒè­¦å‘Š
     for (size_t i = 0; i < Dictionary_English.size(); i++) {
         setColor(LIGHTGREEN);
         cout << left << setw(6) << i + 1;
@@ -141,13 +141,13 @@ void printword() {
     resetColor();
     
     setColor(YELLOW);
-    cout << "1. ±à¼­µ¥´Ê" << endl;
-    cout << "2. É¾³ıµ¥´Ê" << endl;
-    cout << "3. Ìí¼Óµ¥´Ê" << endl;
-    cout << "4. ·µ»ØÖ÷²Ëµ¥" << endl; 
-    cout << "5. ²¥·ÅÖ¸¶¨µ¥´Ê·¢Òô" << endl;
+    cout << "1. ç¼–è¾‘å•è¯" << endl;
+    cout << "2. åˆ é™¤å•è¯" << endl;
+    cout << "3. æ·»åŠ å•è¯" << endl;
+    cout << "4. è¿”å›ä¸»èœå•" << endl; 
+    cout << "5. æ’­æ”¾æŒ‡å®šå•è¯å‘éŸ³" << endl;
     resetColor();
-    cout << "ÇëÊäÈë²Ù×÷£º";
+    cout << "è¯·è¾“å…¥æ“ä½œï¼š";
 }
 
 string getFileContent(const string& filename) {
@@ -224,7 +224,7 @@ string SeeCode(string InputCode) {
         }
     }
     
-    // ĞŞ¸´£ºÓÃsize_t±ÜÃâÓĞ·ûºÅ/ÎŞ·ûºÅ±È½Ï¾¯¸æ
+    // ä¿®å¤ï¼šç”¨size_té¿å…æœ‰ç¬¦å·/æ— ç¬¦å·æ¯”è¾ƒè­¦å‘Š
     ofstream fout("Dictionary.txt");
     for (size_t i = 0; i < Dictionary_English.size(); i++) {
         fout << "<e>" << Dictionary_English[i] << "<c>" << Dictionary_Chinese[i];
@@ -232,39 +232,39 @@ string SeeCode(string InputCode) {
     fout << "~";
     fout.close();
 
-    return "µ¥´ÊÂ¼Èë³É¹¦£¡";
+    return "å•è¯å½•å…¥æˆåŠŸï¼";
 }
 
 void Edit() {
     if (Dictionary_English.empty()) {
         setColor(LIGHTRED);
-        cout << "µ¥´ÊÁĞ±íÎª¿Õ£¬ÎŞ·¨±à¼­£¡" << endl;
+        cout << "å•è¯åˆ—è¡¨ä¸ºç©ºï¼Œæ— æ³•ç¼–è¾‘ï¼" << endl;
         resetColor();
         system("pause");
         return;
     }
     
-    cout << "ÇëÊäÈëÒª±à¼­µÄµ¥´ÊµÄ±àºÅ£º";
+    cout << "è¯·è¾“å…¥è¦ç¼–è¾‘çš„å•è¯çš„ç¼–å·ï¼š";
     int num;
     cin >> num;
     
-    // ĞŞ¸´£ºÓÃsize_t±ÜÃâÓĞ·ûºÅ/ÎŞ·ûºÅ±È½Ï¾¯¸æ
+    // ä¿®å¤ï¼šç”¨size_té¿å…æœ‰ç¬¦å·/æ— ç¬¦å·æ¯”è¾ƒè­¦å‘Š
     if (num < 1 || (size_t)num > Dictionary_English.size()) {
         setColor(LIGHTRED);
-        cout << "±àºÅÎŞĞ§£¡" << endl;
+        cout << "ç¼–å·æ— æ•ˆï¼" << endl;
         resetColor();
         system("pause");
         return;
     }
     
     setColor(LIGHTCYAN);
-    cout << "µ±Ç°µ¥´Ê£º" << Dictionary_English[num - 1] << " - " << Dictionary_Chinese[num - 1] << endl;
+    cout << "å½“å‰å•è¯ï¼š" << Dictionary_English[num - 1] << " - " << Dictionary_Chinese[num - 1] << endl;
     resetColor();
     
-    cout << "ÇëÊäÈëĞÂµÄÓ¢ÎÄµ¥´Ê£º";
+    cout << "è¯·è¾“å…¥æ–°çš„è‹±æ–‡å•è¯ï¼š";
     string en;
     cin >> en;
-    cout << "ÇëÊäÈëĞÂµÄÖĞÎÄÒâË¼£º";
+    cout << "è¯·è¾“å…¥æ–°çš„ä¸­æ–‡æ„æ€ï¼š";
     string ch;
     cin.ignore();
     getline(cin, ch);
@@ -273,7 +273,7 @@ void Edit() {
     Dictionary_Chinese[num - 1] = ch;
     
     setColor(LIGHTGREEN);
-    cout << "±à¼­³É¹¦£¡" << endl;
+    cout << "ç¼–è¾‘æˆåŠŸï¼" << endl;
     resetColor();
     
     ofstream fout("Dictionary.txt");
@@ -289,19 +289,19 @@ void Edit() {
 void Delete() {
     if (Dictionary_English.empty()) {
         setColor(LIGHTRED);
-        cout << "µ¥´ÊÁĞ±íÎª¿Õ£¬ÎŞ·¨É¾³ı£¡" << endl;
+        cout << "å•è¯åˆ—è¡¨ä¸ºç©ºï¼Œæ— æ³•åˆ é™¤ï¼" << endl;
         resetColor();
         system("pause");
         return;
     }
     
-    cout << "ÇëÊäÈëÒªÉ¾³ıµÄµ¥´ÊµÄ±àºÅ£º";
+    cout << "è¯·è¾“å…¥è¦åˆ é™¤çš„å•è¯çš„ç¼–å·ï¼š";
     int num;
     cin >> num;
     
     if (num < 1 || (size_t)num > Dictionary_English.size()) {
         setColor(LIGHTRED);
-        cout << "±àºÅÎŞĞ§£¡" << endl;
+        cout << "ç¼–å·æ— æ•ˆï¼" << endl;
         resetColor();
         system("pause");
         return;
@@ -313,7 +313,7 @@ void Delete() {
     Dictionary_Chinese.erase(Dictionary_Chinese.begin() + num - 1);
     
     setColor(LIGHTGREEN);
-    cout << "µ¥´Ê '" << deletedWord << "' É¾³ı³É¹¦£¡" << endl;
+    cout << "å•è¯ '" << deletedWord << "' åˆ é™¤æˆåŠŸï¼" << endl;
     resetColor();
     
     ofstream fout("Dictionary.txt");
@@ -329,19 +329,19 @@ void Delete() {
 void playWordByIndex() {
     if (Dictionary_English.empty()) {
         setColor(LIGHTRED);
-        cout << "µ¥´ÊÁĞ±íÎª¿Õ£¬ÎŞ·¨²¥·Å£¡" << endl;
+        cout << "å•è¯åˆ—è¡¨ä¸ºç©ºï¼Œæ— æ³•æ’­æ”¾ï¼" << endl;
         resetColor();
         system("pause");
         return;
     }
     
-    cout << "ÇëÊäÈëÒª²¥·Å·¢ÒôµÄµ¥´Ê±àºÅ£º";
+    cout << "è¯·è¾“å…¥è¦æ’­æ”¾å‘éŸ³çš„å•è¯ç¼–å·ï¼š";
     int num;
     cin >> num;
     
     if (num < 1 || (size_t)num > Dictionary_English.size()) {
         setColor(LIGHTRED);
-        cout << "±àºÅÎŞĞ§£¡" << endl;
+        cout << "ç¼–å·æ— æ•ˆï¼" << endl;
         resetColor();
         system("pause");
         return;
@@ -349,7 +349,7 @@ void playWordByIndex() {
     
     string targetWord = Dictionary_English[num - 1];
     setColor(LIGHTCYAN);
-    cout << "ÕıÔÚ²¥·Åµ¥´Ê£º" << targetWord << endl;
+    cout << "æ­£åœ¨æ’­æ”¾å•è¯ï¼š" << targetWord << endl;
     resetColor();
     playVoice(targetWord);
     system("pause");
@@ -358,26 +358,26 @@ void playWordByIndex() {
 void add() {
     string en, ch;
     setColor(YELLOW);
-    cout << "===== Ìí¼ÓĞÂµ¥´Ê =====" << endl;
+    cout << "===== æ·»åŠ æ–°å•è¯ =====" << endl;
     resetColor();
     
     while (true) {
-        cout << "ÇëÊäÈëÓ¢ÎÄµ¥´Ê£º";
+        cout << "è¯·è¾“å…¥è‹±æ–‡å•è¯ï¼š";
         cin >> en;
         cin.ignore();
-        cout << "ÇëÊäÈëÖĞÎÄÒâË¼£º";
+        cout << "è¯·è¾“å…¥ä¸­æ–‡æ„æ€ï¼š";
         getline(cin, ch);
         
         Dictionary_English.push_back(en);
         Dictionary_Chinese.push_back(ch);
         
         setColor(LIGHTGREEN);
-        cout << "µ¥´ÊÌí¼Ó³É¹¦£¡ÕıÔÚ²¥·Å·¢Òô..." << endl;
+        cout << "å•è¯æ·»åŠ æˆåŠŸï¼æ­£åœ¨æ’­æ”¾å‘éŸ³..." << endl;
         playVoice(en);
         resetColor();
         cout << endl;
         
-        cout << "ÊÇ·ñ¼ÌĞøÌí¼Óµ¥´Ê(y/n)£º";
+        cout << "æ˜¯å¦ç»§ç»­æ·»åŠ å•è¯(y/n)ï¼š";
         string tmp;
         cin >> tmp;
         if (tmp == "n" || tmp == "N") {
@@ -393,27 +393,27 @@ void add() {
     fout.close();
     
     setColor(LIGHTGREEN);
-    cout << endl << "ËùÓĞµ¥´ÊÒÑ±£´æ£¡" << endl;
+    cout << endl << "æ‰€æœ‰å•è¯å·²ä¿å­˜ï¼" << endl;
     resetColor();
     system("pause");
 }
 
 void Welcome(int UserChoice) {
     if (UserChoice == 1) {
-        clearScreen("±³µ¥´ÊÄ£Ê½(Ó¢ÒëÖĞ  Ëæ»ú°æ)");
+        clearScreen("èƒŒå•è¯æ¨¡å¼(è‹±è¯‘ä¸­  éšæœºç‰ˆ)");
         setColor(CYAN);
-        cout << "²Ù×÷ËµÃ÷£º" << endl;
-        cout << "  0 - ²é¿´ÖĞÎÄÒâË¼" << endl;
-        cout << "  1 - ÒÑÕÆÎÕ£¨²»ÔÙ³öÊ¾£©" << endl;
-        cout << "  2 - Î´ÕÆÎÕ£¨¼ÌĞøÁ·Ï°£©" << endl;
-        cout << "  3 - ÖØ¸´²¥·Åµ¥´Ê·¢Òô" << endl;
-        cout << "  q - ÍË³öµ±Ç°Ä£Ê½" << endl;
+        cout << "æ“ä½œè¯´æ˜ï¼š" << endl;
+        cout << "  0 - æŸ¥çœ‹ä¸­æ–‡æ„æ€" << endl;
+        cout << "  1 - å·²æŒæ¡ï¼ˆä¸å†å‡ºç¤ºï¼‰" << endl;
+        cout << "  2 - æœªæŒæ¡ï¼ˆç»§ç»­ç»ƒä¹ ï¼‰" << endl;
+        cout << "  3 - é‡å¤æ’­æ”¾å•è¯å‘éŸ³" << endl;
+        cout << "  q - é€€å‡ºå½“å‰æ¨¡å¼" << endl;
         cout << string(50, '-') << endl << endl;
         resetColor();
         
         if (Dictionary_English.empty()) {
             setColor(LIGHTRED);
-            cout << "µ¥´ÊÁĞ±íÎª¿Õ£¬ÇëÏÈÌí¼Óµ¥´Ê£¡" << endl;
+            cout << "å•è¯åˆ—è¡¨ä¸ºç©ºï¼Œè¯·å…ˆæ·»åŠ å•è¯ï¼" << endl;
             resetColor();
             system("pause");
             return;
@@ -438,28 +438,28 @@ void Welcome(int UserChoice) {
             }
             
             setColor(YELLOW);
-            cout << "½ø¶È£º" << done << "/" << total << endl;
+            cout << "è¿›åº¦ï¼š" << done << "/" << total << endl;
             resetColor();
             setColor(LIGHTCYAN);
-            cout << "µ±Ç°µ¥´Ê£º" << rv[i].vocabulary_English << endl;
+            cout << "å½“å‰å•è¯ï¼š" << rv[i].vocabulary_English << endl;
             resetColor();
             
             playVoice(rv[i].vocabulary_English);
             
-            cout << "ÇëÊäÈë²Ù×÷£º";
+            cout << "è¯·è¾“å…¥æ“ä½œï¼š";
             cin >> Input;
             
             if (Input == '0') {
                 setColor(LIGHTGREEN);
-                cout << "ÖĞÎÄÒâË¼£º" << rv[i].vocabulary_Chinese << endl;
+                cout << "ä¸­æ–‡æ„æ€ï¼š" << rv[i].vocabulary_Chinese << endl;
                 resetColor();
-                cout << "ÇëÊäÈë²Ù×÷(1/2/3/q)£º";
+                cout << "è¯·è¾“å…¥æ“ä½œ(1/2/3/q)ï¼š";
                 cin >> Input;
             }
             
             if (Input == '3') {
                 setColor(LIGHTCYAN);
-                cout << "ÕıÔÚÖØ¸´²¥·Åµ¥´Ê·¢Òô..." << endl;
+                cout << "æ­£åœ¨é‡å¤æ’­æ”¾å•è¯å‘éŸ³..." << endl;
                 resetColor();
                 playVoice(rv[i].vocabulary_English);
                 Sleep(500);
@@ -469,7 +469,7 @@ void Welcome(int UserChoice) {
                 done++;
                 rv[i].vocabulary_English = "~!@";
                 setColor(LIGHTGREEN);
-                cout << "¹§Ï²£¬ÒÑÕÆÎÕÕâ¸öµ¥´Ê£¡" << endl;
+                cout << "æ­å–œï¼Œå·²æŒæ¡è¿™ä¸ªå•è¯ï¼" << endl;
                 resetColor();
                 Sleep(800);
                 i = (i + 1) % total;
@@ -477,8 +477,8 @@ void Welcome(int UserChoice) {
                 continue;
             } else if (Input == '2') {
                 setColor(LIGHTRED);
-                cout << "¼ÌĞø¼ÓÓÍ£¡" << endl;
-                cout << "ÖĞÎÄÒâË¼£º" << rv[i].vocabulary_Chinese << endl;
+                cout << "ç»§ç»­åŠ æ²¹ï¼" << endl;
+                cout << "ä¸­æ–‡æ„æ€ï¼š" << rv[i].vocabulary_Chinese << endl;
                 resetColor();
                 Sleep(1000);
                 i = (i + 1) % total;
@@ -488,7 +488,7 @@ void Welcome(int UserChoice) {
                 break;
             } else {
                 setColor(LIGHTRED);
-                cout << "ÊäÈë´íÎó£¬ÇëÖØĞÂÊäÈë£¡" << endl;
+                cout << "è¾“å…¥é”™è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥ï¼" << endl;
                 resetColor();
                 Sleep(800);
                 system("cls");
@@ -498,25 +498,25 @@ void Welcome(int UserChoice) {
         
         clearScreen();
         setColor(YELLOW);
-        cout << "±³µ¥´ÊÄ£Ê½(Ó¢ÒëÖĞ)ÒÑÍË³ö" << endl;
-        cout << "±¾´Î¹²ÕÆÎÕ " << done << " ¸öµ¥´Ê" << endl;
+        cout << "èƒŒå•è¯æ¨¡å¼(è‹±è¯‘ä¸­)å·²é€€å‡º" << endl;
+        cout << "æœ¬æ¬¡å…±æŒæ¡ " << done << " ä¸ªå•è¯" << endl;
         resetColor();
-        cout << "3Ãëºó·µ»ØÖ÷²Ëµ¥..." << endl;
+        cout << "3ç§’åè¿”å›ä¸»èœå•..." << endl;
         Sleep(3000); 
         system("cls");
     } else if (UserChoice == 2) {
-        clearScreen("±³µ¥´ÊÄ£Ê½(ÖĞÒëÓ¢  Ëæ»ú°æ)");
+        clearScreen("èƒŒå•è¯æ¨¡å¼(ä¸­è¯‘è‹±  éšæœºç‰ˆ)");
         setColor(CYAN);
-        cout << "²Ù×÷ËµÃ÷£º" << endl;
-        cout << "  ÊäÈë¶ÔÓ¦Ó¢ÎÄµ¥´Ê - »Ø´ğÕıÈ·½«±ê¼ÇÎªÒÑÕÆÎÕ" << endl;
-        cout << "  ÊäÈë 3 - ²¥·ÅÕıÈ·µ¥´Ê·¢Òô£¨»Ø´ğ´íÎóºó¿ÉÓÃ£©" << endl;
-        cout << "  q - ÍË³öµ±Ç°Ä£Ê½" << endl;
+        cout << "æ“ä½œè¯´æ˜ï¼š" << endl;
+        cout << "  è¾“å…¥å¯¹åº”è‹±æ–‡å•è¯ - å›ç­”æ­£ç¡®å°†æ ‡è®°ä¸ºå·²æŒæ¡" << endl;
+        cout << "  è¾“å…¥ 3 - æ’­æ”¾æ­£ç¡®å•è¯å‘éŸ³ï¼ˆå›ç­”é”™è¯¯åå¯ç”¨ï¼‰" << endl;
+        cout << "  q - é€€å‡ºå½“å‰æ¨¡å¼" << endl;
         cout << string(50, '-') << endl << endl;
         resetColor();
         
         if (Dictionary_English.empty()) {
             setColor(LIGHTRED);
-            cout << "µ¥´ÊÁĞ±íÎª¿Õ£¬ÇëÏÈÌí¼Óµ¥´Ê£¡" << endl;
+            cout << "å•è¯åˆ—è¡¨ä¸ºç©ºï¼Œè¯·å…ˆæ·»åŠ å•è¯ï¼" << endl;
             resetColor();
             system("pause");
             return;
@@ -542,12 +542,12 @@ void Welcome(int UserChoice) {
             }
             
             setColor(YELLOW);
-            cout << "½ø¶È£º" << done << "/" << total << endl;
+            cout << "è¿›åº¦ï¼š" << done << "/" << total << endl;
             resetColor();
             setColor(LIGHTGREEN);
-            cout << "µ±Ç°ÖĞÎÄ£º" << rv[i].vocabulary_Chinese << endl;
+            cout << "å½“å‰ä¸­æ–‡ï¼š" << rv[i].vocabulary_Chinese << endl;
             resetColor();
-            cout << "ÇëÊäÈëÓ¢ÎÄµ¥´Ê£º";
+            cout << "è¯·è¾“å…¥è‹±æ–‡å•è¯ï¼š";
             
             getline(cin, Input);
             
@@ -555,7 +555,7 @@ void Welcome(int UserChoice) {
                 done++;
                 rv[i].vocabulary_English = "~!@";
                 setColor(LIGHTGREEN);
-                cout << "¹§Ï²£¬»Ø´ğÕıÈ·£¡ÕıÔÚ²¥·Åµ¥´Ê·¢Òô..." << endl;
+                cout << "æ­å–œï¼Œå›ç­”æ­£ç¡®ï¼æ­£åœ¨æ’­æ”¾å•è¯å‘éŸ³..." << endl;
                 playVoice(Input);
                 resetColor();
                 system("pause");
@@ -564,7 +564,7 @@ void Welcome(int UserChoice) {
                 continue;
             } else if (Input == "3") {
                 setColor(LIGHTCYAN);
-                cout << "ÕıÈ·µ¥´Ê£º" << rv[i].vocabulary_English << "£¬ÕıÔÚ²¥·Å·¢Òô..." << endl;
+                cout << "æ­£ç¡®å•è¯ï¼š" << rv[i].vocabulary_English << "ï¼Œæ­£åœ¨æ’­æ”¾å‘éŸ³..." << endl;
                 playVoice(rv[i].vocabulary_English);
                 resetColor();
                 system("pause");
@@ -574,8 +574,8 @@ void Welcome(int UserChoice) {
                 break;
             } else {
                 setColor(LIGHTRED);
-                cout << "»Ø´ğ´íÎó£¬¼ÌĞø¼ÓÓÍ£¡" << endl;
-                cout << "ÕıÈ·´ğ°¸£º" << rv[i].vocabulary_English << "£¬ÕıÔÚ²¥·Å·¢Òô..." << endl;
+                cout << "å›ç­”é”™è¯¯ï¼Œç»§ç»­åŠ æ²¹ï¼" << endl;
+                cout << "æ­£ç¡®ç­”æ¡ˆï¼š" << rv[i].vocabulary_English << "ï¼Œæ­£åœ¨æ’­æ”¾å‘éŸ³..." << endl;
                 playVoice(rv[i].vocabulary_English);
                 resetColor();
                 system("pause");
@@ -587,22 +587,22 @@ void Welcome(int UserChoice) {
         
         clearScreen();
         setColor(YELLOW);
-        cout << "±³µ¥´ÊÄ£Ê½(ÖĞÒëÓ¢)ÒÑÍË³ö" << endl;
-        cout << "±¾´Î¹²ÕÆÎÕ " << done << " ¸öµ¥´Ê" << endl;
+        cout << "èƒŒå•è¯æ¨¡å¼(ä¸­è¯‘è‹±)å·²é€€å‡º" << endl;
+        cout << "æœ¬æ¬¡å…±æŒæ¡ " << done << " ä¸ªå•è¯" << endl;
         resetColor();
-        cout << "3Ãëºó·µ»ØÖ÷²Ëµ¥..." << endl;
+        cout << "3ç§’åè¿”å›ä¸»èœå•..." << endl;
         Sleep(3000); 
         system("cls");
     } else if (UserChoice == 3) {
-        clearScreen("Â¼Èëµ¥´Ê");
+        clearScreen("å½•å…¥å•è¯");
         setColor(CYAN);
-        cout << "Â¼Èë¸ñÊ½£º<e>Ó¢ÎÄµ¥´Ê<c>ÖĞÎÄÒâË¼" << endl;
-        cout << "Ê¾Àı£º<e>apple<c>Æ»¹û<e>banana<c>Ïã½¶~" << endl;
-        cout << "ÊäÈëÍê³Éºó½«×Ô¶¯±£´æµ½³ÌĞòËùÔÚÎÄ¼ş¼Ğ" << endl;
+        cout << "å½•å…¥æ ¼å¼ï¼š<e>è‹±æ–‡å•è¯<c>ä¸­æ–‡æ„æ€" << endl;
+        cout << "ç¤ºä¾‹ï¼š<e>apple<c>è‹¹æœ<e>banana<c>é¦™è•‰~" << endl;
+        cout << "è¾“å…¥å®Œæˆåå°†è‡ªåŠ¨ä¿å­˜åˆ°ç¨‹åºæ‰€åœ¨æ–‡ä»¶å¤¹" << endl;
         cout << string(50, '-') << endl << endl;
         resetColor();
         
-        cout << "ÇëÊäÈëµ¥´ÊĞòÁĞ£º";
+        cout << "è¯·è¾“å…¥å•è¯åºåˆ—ï¼š";
         string InputCode;
         cin >> InputCode;
         
@@ -610,7 +610,7 @@ void Welcome(int UserChoice) {
         string result = SeeCode(InputCode);
         cout << result << endl;
         if (Dictionary_English.size() > 0) {
-            cout << "ÕıÔÚ²¥·ÅµÚÒ»¸öµ¥´Ê·¢Òô..." << endl;
+            cout << "æ­£åœ¨æ’­æ”¾ç¬¬ä¸€ä¸ªå•è¯å‘éŸ³..." << endl;
             playVoice(Dictionary_English[0]);
         }
         resetColor();
@@ -645,9 +645,9 @@ void Welcome(int UserChoice) {
                 continue;
             } else {
                 setColor(LIGHTRED);
-                cout << "ÊäÈë´íÎó£¬ÇëÖØĞÂÊäÈë£¡" << endl;
+                cout << "è¾“å…¥é”™è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥ï¼" << endl;
                 resetColor();
-                cout << "ÇëÊäÈë²Ù×÷£º";
+                cout << "è¯·è¾“å…¥æ“ä½œï¼š";
             }
         }
         return;
@@ -659,41 +659,41 @@ void Welcome(int UserChoice) {
 int main() {
     bool voiceAvailable = checkVoiceAvailable();
     
-    SetConsoleTitleA("µ¥´Ê±³ËĞÖúÊÖ£¨Ö§³ÖÓïÒô²¥·Å£©");
+    SetConsoleTitleA("å•è¯èƒŒè¯µåŠ©æ‰‹ï¼ˆæ”¯æŒè¯­éŸ³æ’­æ”¾ï¼‰");
     
     int UserChoice;
     while (true) {
         checkfile();
         
-        clearScreen("µ¥´Ê±³ËĞÖúÊÖ v1.1£¨ĞŞ¸´°æ£©");
+        clearScreen("å•è¯èƒŒè¯µåŠ©æ‰‹ v1.1ï¼ˆä¿®å¤ç‰ˆï¼‰");
         setColor(LIGHTCYAN);
         if (voiceAvailable) {
-            cout << "ÓïÒô¹¦ÄÜÒÑÆôÓÃ£¨Ö§³ÖÓ¢ÎÄµ¥´ÊÀÊ¶Á£©" << endl << endl;
+            cout << "è¯­éŸ³åŠŸèƒ½å·²å¯ç”¨ï¼ˆæ”¯æŒè‹±æ–‡å•è¯æœ—è¯»ï¼‰" << endl << endl;
         } else {
-            cout << " ÓïÒô¹¦ÄÜÎ´ÆôÓÃ£¨PowerShell»ò.NET×é¼ş²»¿ÉÓÃ£©" << endl << endl;
+            cout << " è¯­éŸ³åŠŸèƒ½æœªå¯ç”¨ï¼ˆPowerShellæˆ–.NETç»„ä»¶ä¸å¯ç”¨ï¼‰" << endl << endl;
         }
         resetColor();
         
         setColor(YELLOW);
-        cout << "ÇëÑ¡Ôñ¹¦ÄÜ£º" << endl << endl;
+        cout << "è¯·é€‰æ‹©åŠŸèƒ½ï¼š" << endl << endl;
         resetColor();
         
         setColor(LIGHTCYAN);
-        cout << " 1. ±³µ¥´ÊÄ£Ê½(Ó¢ÒëÖĞ  Ëæ»ú°æ)" << endl;
-        cout << " 2. ±³µ¥´ÊÄ£Ê½(ÖĞÒëÓ¢  Ëæ»ú°æ)" << endl;
-        cout << " 3. ÅúÁ¿Â¼Èëµ¥´Ê" << endl;
-        cout << " 4. ¹ÜÀíµ¥´ÊÁĞ±í" << endl;
-        cout << " 5. ÍË³ö³ÌĞò" << endl << endl;
+        cout << " 1. èƒŒå•è¯æ¨¡å¼(è‹±è¯‘ä¸­  éšæœºç‰ˆ)" << endl;
+        cout << " 2. èƒŒå•è¯æ¨¡å¼(ä¸­è¯‘è‹±  éšæœºç‰ˆ)" << endl;
+        cout << " 3. æ‰¹é‡å½•å…¥å•è¯" << endl;
+        cout << " 4. ç®¡ç†å•è¯åˆ—è¡¨" << endl;
+        cout << " 5. é€€å‡ºç¨‹åº" << endl << endl;
         resetColor();
         
-        cout << "ÇëÊäÈë²Ù×÷±àºÅ£º";
+        cout << "è¯·è¾“å…¥æ“ä½œç¼–å·ï¼š";
         cin >> UserChoice;
         
         if (UserChoice == 5) {
             clearScreen();
             setColor(YELLOW);
-            cout << "¸ĞĞ»Ê¹ÓÃµ¥´Ê±³ËĞÖúÊÖ£¡" << endl;
-            cout << "³ÌĞò½«ÔÚ3ÃëºóÍË³ö";
+            cout << "æ„Ÿè°¢ä½¿ç”¨å•è¯èƒŒè¯µåŠ©æ‰‹ï¼" << endl;
+            cout << "ç¨‹åºå°†åœ¨3ç§’åé€€å‡º";
             resetColor();
             Sleep(1000);
             cout << ".";
@@ -708,3 +708,4 @@ int main() {
     }
     return 0;
 }
+
